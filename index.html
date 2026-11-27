@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>你的名字 | 个人网站</title>
-  <meta name="description" content="个人介绍、学习笔记与资料分享。">
+  <title>杨菲 | 个人网站</title>
+  <meta name="description" content="个人思考、学习笔记、Vibe coding 作品与关于我。">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
@@ -13,78 +13,129 @@
 
   <header class="site-header">
     <div class="site-header__inner">
-      <a class="site-brand" href="#main-content">
-        <span class="site-brand__name">你的名字</span>
+      <a class="site-brand" href="#blog" data-page-link="blog">
+        <span class="site-brand__name">杨菲</span>
         <span class="site-brand__label">个人网站</span>
       </a>
       <nav class="site-nav" aria-label="主要导航">
-        <a href="#main-content">首页</a>
-        <a href="#notes">学习笔记</a>
-        <a href="#resources">资料分享</a>
-        <a href="#about">关于我</a>
+        <a href="#blog" data-page-link="blog">Blog</a>
+        <a href="#works" data-page-link="works">Vibe coding 作品</a>
+        <a href="#about" data-page-link="about">关于我</a>
       </nav>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色">切换深浅色</button>
     </div>
   </header>
 
   <main id="main-content" class="container">
-    <section class="hero" aria-labelledby="hero-title">
-      <p class="hero__eyebrow">你好，我是</p>
-      <h1 id="hero-title">你的名字</h1>
-      <p class="hero__lead">目标方向：AI 产品。这里记录我正在读的东西、做过的事和值得分享的资料。</p>
-      <div class="tags" aria-label="兴趣标签">
-        <span>AI 产品</span>
-        <span>学习笔记</span>
-        <span>效率工具</span>
-        <span>资料整理</span>
+    <section class="page" data-page-section="blog" aria-labelledby="blog-title">
+      <div class="page-head">
+        <div>
+          <h1 id="blog-title">Blog</h1>
+          <p class="page-intro">个人思考和学习笔记都放在这里，左侧标签用来区分类型。</p>
+        </div>
+        <span class="count-pill" data-count>3 条内容</span>
       </div>
-    </section>
 
-    <section id="notes" class="section" aria-labelledby="notes-title">
-      <h2 id="notes-title">学习笔记</h2>
-      <p class="section__intro">按时间记录，以下是一些示例条目，替换成你自己的内容即可。</p>
+      <div class="search-block" data-search-scope>
+        <label for="blog-search" class="search-label">搜索内容</label>
+        <input id="blog-search" type="search" data-search-input placeholder="输入关键词，例如意图识别、面试、AI……">
+      </div>
 
-      <article class="note-card">
-        <time datetime="2026-11-27">2026 年 11 月 27 日</time>
-        <h3>笔记标题一：这里写你学了什么</h3>
-        <p>用两三句话概括这篇笔记讲了什么，适合以后自己回看，也方便别人快速判断要不要读。</p>
-        <a href="#">正文链接（待补充）</a>
+      <article class="entry-card">
+        <div class="entry-thumb"><span>个人思考</span></div>
+        <div class="entry-body">
+          <time datetime="2026-11-21">2026 年 11 月 21 日</time>
+          <h3>意图识别、面试准备与一点反思</h3>
+          <p>从实习项目里的意图识别聊起，记录一次面试前的混乱思考，以及被小红书“点点总结”搭出完整知识体系的过程。</p>
+          <a href="posts/intent-recognition.html">阅读全文 →</a>
+        </div>
       </article>
 
-      <article class="note-card">
-        <time datetime="2026-11-20">2026 年 11 月 20 日</time>
-        <h3>笔记标题二：一次产品分析的记录</h3>
-        <p>写下你观察到的用户问题、你提出的方案，以及最后的结果或反思。</p>
-        <a href="#">正文链接（待补充）</a>
+      <article class="entry-card">
+        <div class="entry-thumb"><span>学习笔记</span></div>
+        <div class="entry-body">
+          <time datetime="2026-11-27">2026 年 11 月 27 日</time>
+          <h3>环境变量与模型交流方式总结</h3>
+          <p>解释环境变量、终端与模型之间的通信过程，以及终端和客户端在使用体验上的差别。已做脱敏处理。</p>
+          <a href="posts/environment-variables.html">阅读全文 →</a>
+        </div>
       </article>
 
-      <article class="note-card">
-        <time datetime="2026-11-13">2026 年 11 月 13 日</time>
-        <h3>笔记标题三：工具或方法的心得</h3>
-        <p>记录一个具体工具、一个具体场景，以及它帮你省了什么时间。</p>
-        <a href="#">正文链接（待补充）</a>
+      <article class="entry-card">
+        <div class="entry-thumb"><span>学习笔记</span></div>
+        <div class="entry-body">
+          <time datetime="2026-11-20">2026 年 11 月 20 日</time>
+          <h3>2026 AI 环境配置完整指南</h3>
+          <p>覆盖 Node.js、Git、Python、代理设置、API Key 和常见 Agent 工具，适合解决第一次配置时的报错。</p>
+          <a href="posts/ai-setup-guide.html">阅读全文 →</a>
+        </div>
       </article>
     </section>
 
-    <section id="resources" class="section" aria-labelledby="resources-title">
-      <h2 id="resources-title">资料分享</h2>
-      <p class="section__intro">把常用文章、网站、视频放在这里，链接换成你自己的。</p>
-      <ul class="resource-list">
-        <li><a href="#">一份值得反复看的产品入门资料</a><span>文章</span></li>
-        <li><a href="#">一个帮你整理笔记的工具</a><span>工具</span></li>
-        <li><a href="#">一门讲得清楚的公开课程</a><span>课程</span></li>
-      </ul>
+    <section class="page" data-page-section="works" aria-labelledby="works-title" hidden>
+      <div class="page-head">
+        <div>
+          <h1 id="works-title">Vibe coding 作品</h1>
+          <p class="page-intro">用 AI 辅助做出来的小工具、页面和实验。每一个都写清楚做了什么、解决什么问题，并放上网址。</p>
+        </div>
+        <span class="count-pill" data-count>3 个作品</span>
+      </div>
+
+      <div class="search-block" data-search-scope>
+        <label for="works-search" class="search-label">搜索作品</label>
+        <input id="works-search" type="search" data-search-input placeholder="输入关键词，例如工具、页面、Demo……">
+      </div>
+
+      <article class="entry-card">
+        <div class="entry-thumb"><span>作品</span></div>
+        <div class="entry-body">
+          <time datetime="2026-11-27">2026 年 11 月 27 日</time>
+          <h3>作品一：生活大爆炸台词检索系统</h3>
+          <p>面向抖音创作者的小工具：输入中英文关键词，快速从《生活大爆炸》台词里找到适合做视频切片的那句，并直接预览对应片段、复制分享链接。当前只收录第一季第一集，作为可跑通的 demo。前端用 Vite + React + TypeScript，台词数据放在 Supabase，视频片段存在 Cloudflare R2，素材用 Python 和 ffmpeg 预处理，页面部署在 Netlify。整条链路围绕搜索、播放和分享展开。</p>
+          <a href="https://bbt-search1-deploy.netlify.app" target="_blank" rel="noopener">查看作品 →</a>
+        </div>
+      </article>
+      <article class="entry-card">
+        <div class="entry-thumb"><span>作品</span></div>
+        <div class="entry-body">
+          <time datetime="2026-11-19">2026 年 11 月 19 日</time>
+          <h3>作品二：一次 AI 产品界面改版</h3>
+          <p>说明原来的问题、你改了哪些地方，以及改完以后哪里更顺手。链接放成品页面。</p>
+          <a href="#">查看作品 →</a>
+        </div>
+      </article>
+      <article class="entry-card">
+        <div class="entry-thumb"><span>作品</span></div>
+        <div class="entry-body">
+          <time datetime="2026-11-12">2026 年 11 月 12 日</time>
+          <h3>作品三：一个数据看板 Demo</h3>
+          <p>讲清楚数据来源、展示方式和你做的取舍，最后放上可以直接打开的网址。</p>
+          <a href="#">查看作品 →</a>
+        </div>
+      </article>
     </section>
 
-    <section id="about" class="section" aria-labelledby="about-title">
-      <h2 id="about-title">关于我</h2>
-      <p>在这里写你的简单经历：现在在做什么、正在学什么、以后想做什么。比如：在校学生，正在准备秋招，关注 AI 产品方向。</p>
-      <p>联系方式：<a href="mailto:hello@example.com">hello@example.com</a></p>
+    <section class="page" data-page-section="about" aria-labelledby="about-title" hidden>
+      <div class="page-head">
+        <div>
+          <h1 id="about-title">关于我</h1>
+          <p class="page-intro">简单介绍一下我是谁、现在在做什么、以后想做什么。</p>
+        </div>
+      </div>
+
+      <div class="about-card">
+        <h2>你好，我是杨菲</h2>
+        <p>在校学生，正在准备秋招，关注 AI 产品方向。平时喜欢把学过的东西写下来，也喜欢用小工具解决生活里的具体问题。</p>
+        <p>这个网站就是我的记录本：文章、资料，以及用 AI 做出来的小作品都会放在这里。</p>
+        <h2>联系方式</h2>
+        <p>邮箱：<a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p>GitHub：<a href="https://github.com/yangf9314-boop">yangf9314-boop</a></p>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 你的名字 · 用 GitHub Pages 搭建</p>
+    <p>© 2026 杨菲 · 用 GitHub Pages 搭建</p>
   </footer>
 </body>
 </html>

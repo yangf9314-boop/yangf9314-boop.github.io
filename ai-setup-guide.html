@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026 AI 环境配置完整指南 | 个人网站</title>
+  <meta name="description" content="从 Node.js、Git、Python 到 API Key，讲清 AI 工具常见环境报错。">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="../index.html#blog">
+        <span class="site-brand__name">杨菲</span>
+        <span class="site-brand__label">个人网站</span>
+      </a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色" style="margin-left:auto">切换深浅色</button>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <div class="post-top">
+      <a href="../index.html#blog">← 返回 Blog</a>
+    </div>
+
+    <article class="article">
+      <h1>2026 AI 环境配置完整指南</h1>
+      <p class="article__date">2026 年 11 月 20 日 · 已脱敏</p>
+      <p>说明：文中的账号信息、个人接口和私人表述已做替换，保留的是通用配置方法和排错思路。</p>
+
+      <h2>1. 必装核心环境（Node.js / Git / Python）</h2>
+      <p>为 AI Agent 提供底层运行支持，必须优先安装。</p>
+
+      <h3>为什么必须安装</h3>
+      <ul>
+        <li><strong>Node.js</strong>：核心基石。绝大多数现代 Agent 工具（比如 Gemini CLI、Claude Code、OpenCode）都依赖 Node 环境运行。</li>
+        <li><strong>Git</strong>：版本控制与代码拉取工具。Agent 在获取外部 Skill、克隆插件仓库时依赖 Git。</li>
+        <li><strong>Python</strong>：数据处理与脚本执行环境。大量 Agent 的底层技能由 Python 编写。</li>
+      </ul>
+      <p>以 OpenClaw 为例，不管是通过 <code>npm install</code> 安装，还是通过脚本安装，还是让其他智能体帮忙安装，都依赖 Node.js 和 Git 环境。</p>
+
+      <h3>安装方法</h3>
+      <p><strong>Windows 系统（方法一）：直接下载安装文件</strong></p>
+      <table>
+        <thead>
+          <tr><th>工具</th><th>官方下载地址</th><th>验证命令</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Node.js</td><td><a href="https://nodejs.org">nodejs.org</a></td><td><code>node -v</code> / <code>npm -v</code></td></tr>
+          <tr><td>Git</td><td><a href="https://git-scm.com">git-scm.com</a></td><td><code>git --version</code></td></tr>
+          <tr><td>Python</td><td><a href="https://python.org">python.org</a></td><td><code>python --version</code></td></tr>
+        </tbody>
+      </table>
+      <p>安装完成后可以在终端验证，如果命令能正常输出版本号说明安装成功：</p>
+      <pre><code>node -v
+npm -v
+git --version
+python --version</code></pre>
+      <p><strong>安装要点：</strong></p>
+      <ul>
+        <li>安装时请务必勾选 <code>Add to PATH</code>。</li>
+        <li>其余步骤保持默认设置即可。</li>
+        <li>若终端能正常输出版本号，则表示安装成功。</li>
+      </ul>
+
+      <p><strong>Windows 系统（方法二）：使用系统内置的 winget</strong></p>
+      <p>打开 PowerShell，直接运行以下命令。这会自动下载并配置环境变量。</p>
+      <pre><code>winget install OpenJS.NodeJS.LTS
+winget install Git.Git
+winget install Python.Python.3.13</code></pre>
+
+      <p><strong>macOS 系统（使用 Homebrew）</strong></p>
+      <p>打开终端。如果网络受限，建议先配置好代理，否则可能导致拉取失败。</p>
+      <p>1. 安装 Homebrew（如果提示安装 Xcode Command Line Tools，按回车确认）：</p>
+      <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+      <p>安装过程中如果系统没有 Command Line Tools 会提示安装。Homebrew 安装完成后运行下面的命令，确认环境正常：</p>
+      <pre><code>brew doctor</code></pre>
+      <p>2. 随后安装基础环境：</p>
+      <pre><code>brew install node
+brew install git
+brew install python</code></pre>
+      <p>验证安装：</p>
+      <pre><code>node -v
+git --version
+python3 --version</code></pre>
+      <p><strong>避坑提示：</strong>作为单纯的 AI 使用者，<strong>不要</strong>去安装 <code>nvm</code>（Node 版本管理）或 <code>uv</code>（Python 依赖管理）。这些是针对开发者的复杂工具，只会增加普通人的使用摩擦。</p>
+      <blockquote>
+        <p>很多人看到 OpenClaw 的安装命令是 <code>curl | bash</code> 或 Windows 的 <code>iwr | iex</code>，会误以为这是在“直接安装软件”。其实不是。这种命令本质只是下载并运行一个安装脚本，让官方可以在脚本里检查系统环境、创建配置文件、安装后台服务等。</p>
+        <p>但需要注意：OpenClaw 本身仍然依赖 Node.js 和 Git。安装脚本通常只是检测这些依赖是否存在，如果没有就会报错，而不是自动帮你完整安装整个开发环境。</p>
+        <p>相比之下，Claude Code 和 OpenCode 这类工具本质上是比较标准的 Node.js CLI 程序，所以官方更推荐用 <code>npm install -g</code> 来安装。</p>
+      </blockquote>
+
+      <hr>
+
+      <h2>2. 终端基础操作与网络配置</h2>
+      <table>
+        <thead>
+          <tr><th>操作系统</th><th>终端工具</th><th>精准描述</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Windows</td><td>Command Prompt (CMD)</td><td>基于传统 DOS 指令的遗留命令行工具，主要用于执行简单的系统任务。</td></tr>
+          <tr><td>Windows</td><td>PowerShell</td><td>基于 .NET 框架的现代化脚本环境，通过“对象”管理实现复杂的系统自动化。</td></tr>
+          <tr><td>macOS</td><td>Terminal（终端）</td><td>基于 Unix 内核的命令行接口，使用 Zsh/Bash Shell 进行标准化的系统交互。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>针对 PowerShell</h3>
+      <p>PowerShell 可能会报错说“禁止运行脚本”。解决办法是：以管理员身份打开 PowerShell，输入并回车：</p>
+      <pre><code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code></pre>
+
+      <h3>一、环境变量配置</h3>
+      <p><strong>1. CMD (Windows)</strong></p>
+      <ul>
+        <li>仅当前窗口有效（临时）：使用 <code>set</code>，关闭窗口后失效。
+          <pre><code>set OPENAI_API_KEY="你的API_KEY"</code></pre>
+        </li>
+        <li>永久有效：使用 <code>setx</code>，设置后需重新打开 CMD 窗口生效。
+          <pre><code>setx OPENAI_API_KEY "你的API_KEY"</code></pre>
+        </li>
+      </ul>
+      <p><strong>2. Terminal (macOS)</strong></p>
+      <p>以 macOS 默认的 zsh 为例：</p>
+      <ul>
+        <li>仅当前窗口有效（临时）：使用 <code>export</code> 命令。
+          <pre><code>export OPENAI_API_KEY="你的API_KEY"</code></pre>
+        </li>
+        <li>永久有效：将配置追加到 Shell 的配置文件中，并刷新生效。
+          <pre><code>echo 'export OPENAI_API_KEY="你的API_KEY"' &gt;&gt; ~/.zshrc
+source ~/.zshrc</code></pre>
+        </li>
+      </ul>
+
+      <h3>举例：Claude Code 环境变量设置</h3>
+      <p>Claude 模型在某些地区不方便直接使用，可以用兼容接口调用同类模型。</p>
+      <pre><code># 1. CMD (Windows) - 使用 setx 永久设置
+# 注意：setx 命令不需要等号，变量名和值之间用空格分隔
+setx ANTHROPIC_BASE_URL "https://open.bigmodel.cn/api/anthropic"
+setx ANTHROPIC_API_KEY "你的API Key"
+setx ANTHROPIC_MODEL "glm-4.7-flash"
+
+# 2. Terminal (macOS / Linux) - 写入 zsh 配置文件
+echo 'export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"' &gt;&gt; ~/.zshrc
+echo 'export ANTHROPIC_API_KEY="你的API Key"' &gt;&gt; ~/.zshrc
+echo 'export ANTHROPIC_MODEL="glm-4.7-flash"' &gt;&gt; ~/.zshrc
+source ~/.zshrc</code></pre>
+
+      <h3>二、网络代理配置（永久有效）</h3>
+      <p><strong>1. CMD (Windows)</strong></p>
+      <p>使用 <code>setx</code> 命令将代理地址写入用户环境变量，永久有效。</p>
+      <pre><code>setx http_proxy "http://127.0.0.1:7890"
+setx https_proxy "http://127.0.0.1:7890"</code></pre>
+      <p><strong>2. Terminal (macOS)</strong></p>
+      <p>将代理的环境变量永久写入 <code>~/.zshrc</code> 配置文件中。</p>
+      <pre><code>echo 'export http_proxy="http://127.0.0.1:7890"' &gt;&gt; ~/.zshrc
+echo 'export https_proxy="http://127.0.0.1:7890"' &gt;&gt; ~/.zshrc
+source ~/.zshrc</code></pre>
+
+      <h3>三、常用命令</h3>
+      <p><strong>1. CMD (Windows)</strong></p>
+      <ul>
+        <li><code>dir</code>：列出当前目录下的文件和文件夹</li>
+        <li><code>cd 文件夹名</code>：进入指定目录（<code>cd ..</code> 返回上一级）</li>
+        <li><code>md 文件夹名</code> 或 <code>mkdir 文件夹名</code>：创建新文件夹</li>
+        <li><code>del 文件名</code>：删除文件</li>
+      </ul>
+      <p><strong>2. Terminal (macOS)</strong></p>
+      <ul>
+        <li><code>ls</code>：列出文件（<code>ls -la</code> 包含隐藏文件及详细信息）</li>
+        <li><code>cd 文件夹名</code>：切换目录（<code>cd ~</code> 回到用户根目录）</li>
+        <li><code>mkdir 文件夹名</code>：创建新文件夹</li>
+        <li><code>pwd</code>：打印当前工作目录的完整路径</li>
+        <li><code>cat 文件名</code>：在终端中直接查看文件内容</li>
+      </ul>
+
+      <hr>
+
+      <h2>3. API Key 核心认知</h2>
+      <p>API Key 是你调用云端大模型算力的“通行证”，它和普通网页版 AI 有本质区别。</p>
+      <h3>核心差异对比</h3>
+      <table>
+        <thead>
+          <tr><th>维度</th><th>网页版 AI</th><th>API Key 调用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>付费模式</td><td>包月制，有使用次数上限</td><td>按量计费，消耗 Token 扣费，用多少扣多少</td></tr>
+          <tr><td>调用接口</td><td>仅限官方网页或官方 App</td><td>可接入各种第三方 Agent 工具</td></tr>
+          <tr><td>模型选择</td><td>只能用官方提供的固定模型</td><td>可自由切换不同厂商的模型</td></tr>
+        </tbody>
+      </table>
+      <p>API 调用通常需要配置三个核心信息：</p>
+      <ul>
+        <li><strong>API Key</strong>：访问凭证，相当于你的调用密码。</li>
+        <li><strong>Base URL</strong>：API 地址，即请求发送到的服务器网关。</li>
+        <li><strong>Model Name</strong>：模型名称，指定具体要调用的 AI 版本。</li>
+      </ul>
+      <h3>常见 API 类型</h3>
+      <ul>
+        <li><strong>OpenAI 兼容 API</strong>：目前行业最通用的标准接口格式。大多数国内模型平台都支持，使得开发者可以替换底层模型。</li>
+        <li><strong>Anthropic API</strong>：Claude 系列模型专用的接口协议，与 OpenAI 格式略有不同。</li>
+        <li><strong>自定义 API</strong>：某些特定平台独有的接口协议或私有化部署，通常需要额外的参数映射。</li>
+      </ul>
+      <h3>举例</h3>
+      <pre><code># DeepSeek API
+ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+OPENAI_BASE_URL="https://api.deepseek.com/v1"
+OFFICIAL_BASE_URL="https://api.deepseek.com"
+
+# Zhipu AI (智谱 GLM)
+ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+OPENAI_BASE_URL="https://open.bigmodel.cn/api/paas/v4"
+OFFICIAL_BASE_URL="https://open.bigmodel.cn/api/paas/v4"</code></pre>
+      <h3>视觉能力与模型选择限制</h3>
+      <p>如果在命令行 Agent 中发送图片却报错“无法识别”，通常不是工具的问题，而是你填写的模型名称或调用的 API 节点不支持视觉。</p>
+      <ul>
+        <li>纯文本模型：为了追求速度阉割了视觉模块，常用于后台代码生成。</li>
+        <li>免费高可用模型：日常做 Agent 底座测试，可以使用智谱的 <code>GLM-4.7-Flash</code> 这类免费模型。</li>
+      </ul>
+      <p><strong>安全警告：</strong>API Key 等同于你的银行卡密码，绝对不能截图发给别人，也不能上传到公开的 GitHub 仓库中，否则会被恶意盗刷产生账单。</p>
+
+      <hr>
+
+      <h2>4. 进阶环境与 Agent 工具</h2>
+      <h3>Docker 与环境隔离</h3>
+      <ul>
+        <li><strong>作用</strong>：让高权限 Agent 直接在真实电脑里运行代码是危险的。把它关在 Docker 这个“沙盒”里，即便执行了危险代码，也只会影响容器内部。</li>
+        <li><strong>Windows 用户</strong>：直接安装 Docker Desktop。安装时必须勾选 <code>Use WSL 2 based engine</code>。</li>
+        <li><strong>提示</strong>：部署在 Docker 里的服务可以通过 <code>-v /本地路径:/容器内部路径</code> 参数进行卷映射，打通容器内外的数据。</li>
+      </ul>
+      <table>
+        <thead>
+          <tr><th>操作系统</th><th>推荐安装方式</th><th>核心操作</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Windows</td><td>官网下载 .exe 安装包</td><td>安装时务必勾选 "Use WSL 2 based engine"，无需手动折腾命令行。</td></tr>
+          <tr><td>macOS</td><td>官网下载 .dmg 安装包</td><td>确认芯片类型（Apple Silicon 或 Intel），下载对应版本直接拖拽安装。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>本地 AI 大模型部署（LM Studio）</h3>
+      <ul>
+        <li><strong>作用</strong>：让你在不联网、不花钱的情况下，直接在自己电脑上运行 AI 模型（如 Qwen 或 Llama）。</li>
+        <li><strong>优势</strong>：全图形界面操作，且能一键开启“OpenAI 兼容接口”，让其他 AI 工具直接调用本地模型。</li>
+      </ul>
+      <table>
+        <thead>
+          <tr><th>操作系统</th><th>推荐安装方式</th><th>核心操作</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Windows</td><td>官网下载 .exe 安装包</td><td>去 lmstudio.ai 下载，安装后可一键开启兼容 OpenAI 的本地 API 服务。</td></tr>
+          <tr><td>macOS</td><td>官网下载 .dmg 安装包</td><td>对 M 系列芯片支持较好，建议 16G 内存以上机型使用以获得流畅体验。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>主流 Agent 工具横向对比</h3>
+      <table>
+        <thead>
+          <tr><th>工具名称</th><th>安装命令 (NPM)</th><th>备注</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Gemini CLI</td><td><code>npm install -g @google/gemini-cli</code></td><td>Google 官方开源，免费额度大，适合本地文件管理与问答。</td></tr>
+          <tr><td>Claude Code</td><td><code>npm install -g @anthropic-ai/claude-code</code></td><td>Anthropic 官方出品，代码理解力强，执行高危命令需人工确认，安全稳健。</td></tr>
+          <tr><td>OpenCode</td><td><code>npm install -g opencode-ai</code></td><td>第三方开源工具，支持多模型自由切换，有免费模型，需注意保护配置文件中的 Key。</td></tr>
+          <tr><td>OpenClaw</td><td><code>npm install -g openclaw</code></td><td>权限极大，一定要注意安全和隐私。</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 杨菲 · 用 GitHub Pages 搭建</p>
+  </footer>
+</body>
+</html>

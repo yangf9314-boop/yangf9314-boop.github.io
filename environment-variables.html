@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>环境变量与模型交流方式总结 | 个人网站</title>
+  <meta name="description" content="解释环境变量、终端与模型通信，以及终端、客户端和 Agent 的区别。">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="../index.html#blog">
+        <span class="site-brand__name">杨菲</span>
+        <span class="site-brand__label">个人网站</span>
+      </a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色" style="margin-left:auto">切换深浅色</button>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <div class="post-top">
+      <a href="../index.html#blog">← 返回 Blog</a>
+    </div>
+
+    <article class="article">
+      <h1>环境变量与模型交流方式总结</h1>
+      <p class="article__date">2026 年 11 月 27 日 · 已脱敏</p>
+      <p>说明：文中的接口地址、模型名称和账号相关信息已用示例替换，保留的是原理和操作思路。</p>
+
+      <h2>一、今天完成了什么</h2>
+      <ul>
+        <li>将 API Key 和接口地址永久保存到 macOS 的 <code>~/.zshrc</code>。</li>
+        <li>使用 Python 的 <code>openai</code> SDK，成功调用第三方平台上的某个兼容模型。</li>
+        <li>配置了 <code>gpt-chat</code> 命令，可以在终端进行单次提问或连续对话。</li>
+      </ul>
+
+      <h2>二、环境变量是什么</h2>
+      <p>环境变量就是程序可以读取的一组“名称 = 值”配置。本次配置中：</p>
+      <ul>
+        <li><code>OPENAI_API_KEY</code>：证明“你是谁”，用于身份验证。</li>
+        <li><code>OPENAI_BASE_URL</code>：告诉程序“把请求发送到哪里”。</li>
+        <li>模型名称：告诉平台“使用哪个模型”，本次为一个示例模型。</li>
+      </ul>
+      <p>直接执行 <code>export</code> 通常只对当前终端有效；写入 <code>~/.zshrc</code> 后，新终端会自动加载。执行 <code>source ~/.zshrc</code> 可以让当前终端立即重新加载。</p>
+      <p>环境变量跟随终端及其启动的程序，<strong>与当前处于哪个文件夹无关</strong>。API Key 属于敏感信息，不要公开或写进共享代码。</p>
+
+      <h2>三、终端怎样和模型交流</h2>
+      <p>终端本身不是模型。实际过程是：</p>
+      <blockquote>你输入问题 → 终端启动聊天程序 → 程序通过 API 发出请求 → 远端模型生成回答 → 终端显示回答</blockquote>
+      <p>本次用法：</p>
+      <pre><code># 单次提问
+gpt-chat "1+1等于几？"
+
+# 进入连续对话
+gpt-chat</code></pre>
+      <p>连续对话中输入 <code>exit</code> 或按 <code>Ctrl-D</code> 退出。关闭终端不会删除配置；重新打开终端后可直接使用 <code>gpt-chat</code>，但上一次对话的上下文不会保留。</p>
+
+      <h2>四、终端交流和客户端交流的区别</h2>
+      <p><strong>本质相同：</strong>都是把问题发送给远端模型，再展示回答。</p>
+      <ul>
+        <li><strong>终端 <code>gpt-chat</code></strong>：轻量、以文字为主；配置自己管理；关闭后聊天上下文消失。</li>
+        <li><strong>普通 GPT 客户端</strong>：界面更完整，通常提供历史记录、文件上传、图片或语音等功能，具体取决于客户端。</li>
+        <li><strong>Codex 等编程 Agent</strong>：除了对话，还会携带代码上下文、连续调用 API，并根据模型回复操作文件或工具。</li>
+      </ul>
+      <p>如果终端和客户端配置了同一个 API 和模型，回答来源可以相同，主要区别是界面与功能。官方客户端通常使用官方服务；这里的 <code>gpt-chat</code> 使用第三方平台，账号、计费和模型来源不是同一套。</p>
+
+      <h2>五、刚才的 Harness 在哪里</h2>
+      <p>Harness 是模型外部负责组织输入、上下文、工具和执行流程的程序。</p>
+      <p>刚才的交流使用的是本地 <code>gpt-chat</code> Python 脚本中的极简对话 harness，不是官方客户端的 harness：</p>
+      <ul>
+        <li>OpenAI Python SDK 负责请求发送、身份验证和回复接收等通信工作。</li>
+        <li>Python 脚本负责接收输入、保存本次对话、组织消息、循环聊天和显示回复。</li>
+        <li>示例模型负责在远端生成答案。</li>
+      </ul>
+      <pre><code>你 → 终端 → Python 极简 harness → 第三方 API → 示例模型</code></pre>
+      <p>它没有文件读写、命令执行和权限管理等能力，因此不同于完整编程 harness。编程 Agent 的 harness 位于本地客户端中，负责代码上下文、工具执行和多轮任务循环；模型本身不负责实际执行这些工具。</p>
+
+      <h2>六、一句话记住</h2>
+      <blockquote><strong>环境变量是配置，终端和客户端是使用入口，API 是传输通道，Harness 是任务控制程序，模型是在远端生成回答的服务。</strong></blockquote>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 杨菲 · 用 GitHub Pages 搭建</p>
+  </footer>
+</body>
+</html>
