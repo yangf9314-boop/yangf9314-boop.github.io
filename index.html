@@ -1,11 +1,90 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <title>我的个人网站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>你的名字 | 个人网站</title>
+  <meta name="description" content="个人介绍、学习笔记与资料分享。">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>正在搭建中</h1>
-  <p>这里以后会放自我介绍、学习笔记和资料分享。</p>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="#main-content">
+        <span class="site-brand__name">你的名字</span>
+        <span class="site-brand__label">个人网站</span>
+      </a>
+      <nav class="site-nav" aria-label="主要导航">
+        <a href="#main-content">首页</a>
+        <a href="#notes">学习笔记</a>
+        <a href="#resources">资料分享</a>
+        <a href="#about">关于我</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色">切换深浅色</button>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="hero__eyebrow">你好，我是</p>
+      <h1 id="hero-title">你的名字</h1>
+      <p class="hero__lead">目标方向：AI 产品。这里记录我正在读的东西、做过的事和值得分享的资料。</p>
+      <div class="tags" aria-label="兴趣标签">
+        <span>AI 产品</span>
+        <span>学习笔记</span>
+        <span>效率工具</span>
+        <span>资料整理</span>
+      </div>
+    </section>
+
+    <section id="notes" class="section" aria-labelledby="notes-title">
+      <h2 id="notes-title">学习笔记</h2>
+      <p class="section__intro">按时间记录，以下是一些示例条目，替换成你自己的内容即可。</p>
+
+      <article class="note-card">
+        <time datetime="2026-11-27">2026 年 11 月 27 日</time>
+        <h3>笔记标题一：这里写你学了什么</h3>
+        <p>用两三句话概括这篇笔记讲了什么，适合以后自己回看，也方便别人快速判断要不要读。</p>
+        <a href="#">正文链接（待补充）</a>
+      </article>
+
+      <article class="note-card">
+        <time datetime="2026-11-20">2026 年 11 月 20 日</time>
+        <h3>笔记标题二：一次产品分析的记录</h3>
+        <p>写下你观察到的用户问题、你提出的方案，以及最后的结果或反思。</p>
+        <a href="#">正文链接（待补充）</a>
+      </article>
+
+      <article class="note-card">
+        <time datetime="2026-11-13">2026 年 11 月 13 日</time>
+        <h3>笔记标题三：工具或方法的心得</h3>
+        <p>记录一个具体工具、一个具体场景，以及它帮你省了什么时间。</p>
+        <a href="#">正文链接（待补充）</a>
+      </article>
+    </section>
+
+    <section id="resources" class="section" aria-labelledby="resources-title">
+      <h2 id="resources-title">资料分享</h2>
+      <p class="section__intro">把常用文章、网站、视频放在这里，链接换成你自己的。</p>
+      <ul class="resource-list">
+        <li><a href="#">一份值得反复看的产品入门资料</a><span>文章</span></li>
+        <li><a href="#">一个帮你整理笔记的工具</a><span>工具</span></li>
+        <li><a href="#">一门讲得清楚的公开课程</a><span>课程</span></li>
+      </ul>
+    </section>
+
+    <section id="about" class="section" aria-labelledby="about-title">
+      <h2 id="about-title">关于我</h2>
+      <p>在这里写你的简单经历：现在在做什么、正在学什么、以后想做什么。比如：在校学生，正在准备秋招，关注 AI 产品方向。</p>
+      <p>联系方式：<a href="mailto:hello@example.com">hello@example.com</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 你的名字 · 用 GitHub Pages 搭建</p>
+  </footer>
 </body>
 </html>
